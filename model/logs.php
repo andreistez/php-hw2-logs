@@ -2,6 +2,20 @@
 
 function getCurrentLogPath(): string { return 'logs/' . date( 'Y-m-d' ) . '.log'; }
 
+function checkLogExtension( string $file_name ): bool
+{
+	if( ! $file_name ) return false;
+
+	return !! preg_match( '/^.*\.log$/i', $file_name );
+}
+
+function getFileNameWithoutExtension( string $file_name ): ?string
+{
+	if( ! $file_name ) return null;
+
+	return preg_replace( '/\.[^.]+$/', '', $file_name );
+}
+
 function writeLog(): bool
 {
 	$time	= date( 'H:i:s' );
@@ -17,5 +31,21 @@ function writeLog(): bool
 	if( ! $write ) return false;
 
 	return true;
+}
+
+function getLogsFiles(): array
+{
+	$files = scandir( 'logs' );
+
+	return array_filter( $files, function( $f ){
+		return ( is_file( "logs/$f" ) && checkLogExtension( $f ) );
+	} );
+}
+
+function getLogFileContent( $log_name ): array
+{
+	if( ! $contents = file( "logs/$log_name", FILE_IGNORE_NEW_LINES ) ) return [];
+
+	return $contents;
 }
 
