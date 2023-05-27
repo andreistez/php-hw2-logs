@@ -1,9 +1,13 @@
 <?php
 
-	include_once('functions.php');
-	$articles = getArticles();
+include_once('functions.php');
+include_once('model/logs.php');
 
+writeLog();
+
+$articles = getArticles();
 ?>
+
 <a href="add.php">Add article</a>
 <hr>
 <div class="articles">

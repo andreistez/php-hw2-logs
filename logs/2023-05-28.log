@@ -1,0 +1,5 @@
+01:28:22|127.0.0.1|/base-course/hw2/index.php|http://php/base-course/hw2/article.php?id=2
+01:28:26|127.0.0.1|/base-course/hw2/add.php|http://php/base-course/hw2/index.php
+01:28:32|127.0.0.1|/base-course/hw2/add.php|http://php/base-course/hw2/add.php
+01:28:35|127.0.0.1|/base-course/hw2/article.php?id=8|http://php/base-course/hw2/add.php
+01:28:37|127.0.0.1|/base-course/hw2/index.php|http://php/base-course/hw2/article.php?id=8

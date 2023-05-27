@@ -1,11 +1,15 @@
 <?php
 
-	include_once('functions.php');		
-	$articles = getArticles();
+include_once('functions.php');
+include_once('model/logs.php');
 
-	$id = (int)($_GET['id'] ?? '');
-	$post = $articles[$id] ?? null;
-	$hasPost = ($post !== null);
+writeLog();
+
+$articles = getArticles();
+
+$id = (int)($_GET['id'] ?? '');
+$post = $articles[$id] ?? null;
+$hasPost = ($post !== null);
 
 ?>
 <div class="content">
