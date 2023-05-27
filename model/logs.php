@@ -18,11 +18,13 @@ function getFileNameWithoutExtension( string $file_name ): ?string
 
 function writeLog(): bool
 {
-	$time	= date( 'H:i:s' );
-	$ip		= isset( $_SERVER['REMOTE_ADDR'] ) ? "|{$_SERVER['REMOTE_ADDR']}" : '';
-	$uri	= isset( $_SERVER['REQUEST_URI'] ) ? "|{$_SERVER['REQUEST_URI']}" : '';
-	$ref	= isset( $_SERVER['HTTP_REFERER'] ) ? "|{$_SERVER['HTTP_REFERER']}" : '';
-	$line	= $time . $ip . $uri . $ref . "\n";
+	$time			= date( 'H:i:s' );
+	$ip				= isset( $_SERVER['REMOTE_ADDR'] ) ? "|{$_SERVER['REMOTE_ADDR']}" : '';
+	$validateQuery	= ! isset( $_SERVER['QUERY_STRING'] ) || checkQueryParams( $_SERVER['QUERY_STRING'] );
+	$uri			= $_SERVER['REQUEST_URI'] ?? '';
+	$uri			= ( $uri && ! $validateQuery ) ? "|<span style='color: red'>{$uri}</span>" : "|{$uri}";
+	$ref			= isset( $_SERVER['HTTP_REFERER'] ) ? "|{$_SERVER['HTTP_REFERER']}" : '';
+	$line			= $time . $ip . $uri . $ref . "\n";
 
 	$f = fopen( getCurrentLogPath(), 'a' );
 	$write = fwrite( $f, $line );
@@ -47,5 +49,27 @@ function getLogFileContent( $log_name ): array
 	if( ! $contents = file( "logs/$log_name", FILE_IGNORE_NEW_LINES ) ) return [];
 
 	return $contents;
+}
+
+function checkQueryParams( string $query ): bool
+{
+	parse_str( $query, $params );
+	$allowedParams = ['id', 'name'];
+
+	foreach( $params as $param ){
+		$found = false;
+
+		foreach( $allowedParams as $allowed ){
+			if( $param === $allowed ){
+				$found = true;
+				break;
+			}
+		}
+
+		// One of the current params not found in allowed params list.
+		if( ! $found ) return false;
+	}
+
+	return true;
 }
 
