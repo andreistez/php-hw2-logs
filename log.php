@@ -10,7 +10,7 @@ if( ! $log_name ){
 	$lines = getLogFileContent( $log_name );
 
 	if( empty( $lines ) ){
-		echo '<h2>No lines written in this log yet. Please come back later.</h2>';
+		echo '<h2>Log name is incorrect. Please come back later.</h2>';
 	}	else{
 		echo '<style>td{padding: 5px}</style>';
 		echo "<h2>$log_name:</h2><hr />";

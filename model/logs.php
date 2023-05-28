@@ -16,6 +16,16 @@ function getFileNameWithoutExtension( string $file_name ): ?string
 	return preg_replace( '/\.[^.]+$/', '', $file_name );
 }
 
+function checkLogName( string $name ): bool
+{
+	return !! preg_match( '/^\d{4}-\d{2}-\d{2}\.log$/', $name );
+}
+
+function checkLogFileExists( string $file_name ): bool
+{
+	return checkLogName( $file_name ) && file_exists( "logs/$file_name" );
+}
+
 function writeLog(): bool
 {
 	$time			= date( 'H:i:s' );
@@ -44,8 +54,10 @@ function getLogsFiles(): array
 	} );
 }
 
-function getLogFileContent( $log_name ): array
+function getLogFileContent( string $log_name ): ?array
 {
+	if( ! checkLogFileExists( $log_name ) ) return null;
+
 	if( ! $contents = file( "logs/$log_name", FILE_IGNORE_NEW_LINES ) ) return [];
 
 	return $contents;
